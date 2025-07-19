@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { jsx } from "react/jsx-runtime";
 import { StarRating } from "./Star";
-
+import { MovieDetails } from "./components/MovieDetails";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -89,9 +89,9 @@ function Mainbox({ children }) {
   );
 }
 
-function MovieDetails({ movieDetails }) {
-  return movieDetails ? <h2>{movieDetails.Plot}</h2> : null;
-}
+// function MovieDetails({ movieDetails }) {
+//   return movieDetails ? <h2>{movieDetails.Plot}</h2> : null;
+// }
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
