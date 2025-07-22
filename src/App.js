@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { jsx } from "react/jsx-runtime";
-import { StarRating } from "./Star";
 import { MovieDetails } from "./components/MovieDetails";
+import { List } from "./components/List";
+import { MovieList } from "./components/MovieList";
+import { Summary } from "./components/Summary";
+import { Loading } from "./components/Loading";
+import { ErrorShow } from "./components/ErrorShow";
+import { Search } from "./components/Search";
+import { Logo } from "./components/Logo";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -49,29 +55,8 @@ const tempWatchedData = [
   },
 ];
 
-const average = (arr) =>
+export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-
-function Search({ query, setQuery }) {
-  return (
-    <input
-      className="search"
-      type="text"
-      placeholder="Search movies..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-    />
-  );
-}
-
-function Logo() {
-  return (
-    <div className="logo">
-      <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
-    </div>
-  );
-}
 
 function NumbResult({ movies }) {
   return (
@@ -88,10 +73,6 @@ function Mainbox({ children }) {
     </main>
   );
 }
-
-// function MovieDetails({ movieDetails }) {
-//   return movieDetails ? <h2>{movieDetails.Plot}</h2> : null;
-// }
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
@@ -198,91 +179,6 @@ function Box({ children }) {
         {isOpen ? "–" : "+"}
       </button>
       {isOpen && children}
-    </div>
-  );
-}
-
-function List({ watched }) {
-  return (
-    <>
-      <ul className="list">
-        {watched.map((movie) => (
-          <li key={movie.imdbID}>
-            {/* {console.log(movie.Poster)} */}
-            <img src={movie.Poster} alt={`${movie.Title} poster`} />
-            <h3>{movie.Title}</h3>
-            <div>
-              <p>
-                <span>⭐️</span>
-                <span>{movie.imdbRating}</span>
-              </p>
-              <p>
-                <span>🌟</span>
-                <span>{movie.userRating}</span>
-              </p>
-              <p>
-                <span>⏳</span>
-                <span>{movie.runtime} min</span>
-              </p>
-            </div>
-            <StarRating maxLength={10} filcolor={"red"} />
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
-function Loading() {
-  return <h2>Loading....</h2>;
-}
-function ErrorShow({ err }) {
-  return <h2>err.message</h2>;
-}
-function MovieList({ movies, handleDetail }) {
-  return (
-    <ul className="list">
-      {movies?.map((movie) => (
-        <li key={movie.imdbID} onClick={() => handleDetail(movie.imdbID)}>
-          <img src={movie.Poster} alt={`${movie.Title} poster`} />
-          <h3>{movie.Title}</h3>
-          <div>
-            <p>
-              <span>🗓</span>
-              <span>{movie.Year}</span>
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Summary({ watched }) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
-
-  return (
-    <div className="summary">
-      <h2>Movies you watched</h2>
-      <div>
-        <p>
-          <span>#️⃣</span>
-          <span>{watched.length} movies</span>
-        </p>
-        <p>
-          <span>⭐️</span>
-          <span>{avgImdbRating}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{avgUserRating}</span>
-        </p>
-        <p>
-          <span>⏳</span>
-          <span>{avgRuntime} min</span>
-        </p>
-      </div>
     </div>
   );
 }
