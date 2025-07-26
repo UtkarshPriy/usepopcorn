@@ -8,6 +8,7 @@ import { Loading } from "./components/Loading";
 import { ErrorShow } from "./components/ErrorShow";
 import { Search } from "./components/Search";
 import { Logo } from "./components/Logo";
+
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -90,23 +91,30 @@ export default function App() {
   const url = `https://www.omdbapi.com/?apikey=${key}&s=${query}`;
 
   useEffect(() => {
+    const controller = new AbortController();
     async function getMoviesDetails() {
       if (id !== "") {
         const data = await fetch(
-          `https://www.omdbapi.com/?apikey=${key}&i=${id}`
+          `https://www.omdbapi.com/?apikey=${key}&i=${id}`,
+          { signal: controller.signal }
         );
         const details = await data.json();
         setmovieDetails(details);
       }
     }
+
     getMoviesDetails();
+    return function () {
+      controller.abort();
+    };
   }, [id]);
 
   useEffect(() => {
+    const controller = new AbortController();
     async function fetchMovies() {
       try {
         setLoad(true);
-        const data = await fetch(url);
+        const data = await fetch(url, { signal: controller.signal });
         const mvs = await data.json();
         // console.log(mvs.Search);
         if (!data.ok) {
@@ -126,7 +134,11 @@ export default function App() {
     }
 
     fetchMovies();
+    return function () {
+      controller.abort();
+    };
   }, [url]);
+
   function handleDetail(Imdbid) {
     if (id === Imdbid) {
       setId("");

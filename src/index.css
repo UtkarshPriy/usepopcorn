@@ -380,3 +380,7 @@ EMPTY STAR
 </svg>
 
 */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
